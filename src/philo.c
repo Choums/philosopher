@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/04/05 19:29:34 by root             ###   ########.fr       */
+/*   Updated: 2022/04/06 19:39:47 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@
 # include <string.h>
 # include <pthread.h>
 
-int	sum = 0;
-
 void	*ft_sum(void *arg)
 {
-	
-	while (sum < 50000)
-	{
-		sum++;
-	}
-	printf("%d\n", sum);
+	int	i;
+
+	i = 0;
+	pthread_mutex_lock(&mutex);
+	printf("incrementing\n");
+    for (int i = 0; i < 10000; ++i) {
+        sum++;
+    }
+	pthread_mutex_unlock(&mutex);
 	return (0);
 }
 /*
@@ -44,13 +45,16 @@ int	main(int ac, char **av)
 {
 	struct timeval	ms;
 	pthread_t		philo[atoi(av[1])];
-	
+
+	if (ac < 5 && ft_check_arg())
+	{
+		ft_endless();
+	}
+	else
+		ft_
 	// gettimeofday(&ms, NULL);
 	// printf("%ld\n", ms.tv_sec);
 	// printf("%d\n", ms.tv_usec);
-	pthread_create(&philo[0], NULL, ft_sum, NULL);
-	pthread_create(&philo[1], NULL, ft_sum, NULL);
-	pthread_join(philo[0], NULL);
-	pthread_join(philo[1], NULL);
+	printf("%d\n", sum);
 	return (0);
 }

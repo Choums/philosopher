@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/04/01 14:17:59 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/04/06 19:42:01 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,12 @@
 # include <unistd.h>
 # include <string.h>
 # include <pthread.h>
+
+typedef struct s_data
+{
+	pthread_mutex_t	fork;
+
+}	t_data;
+
 
 #endif
