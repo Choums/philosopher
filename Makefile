@@ -4,7 +4,9 @@ SRCDIR		=	./src
 INCDIR		=	./includes
 OBJDIR		=	obj
 
-SRCS		=	philo.c
+SRCS		=	philo.c\
+				checker.c\
+				funct.c
 
 OBJ			=	${addprefix ${OBJDIR}/,${SRCS:.c=.o}}
 

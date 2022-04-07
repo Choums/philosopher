@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/04/06 19:42:01 by root             ###   ########.fr       */
+/*   Updated: 2022/04/07 17:04:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,25 @@
 # include <string.h>
 # include <pthread.h>
 
-typedef struct s_data
+typedef struct s_life
 {
+	int	num;
+	int	t_die;
+	int	t_eat;
+	int	t_sleep;
+	int	plan;
+	
+}	t_life;
+
+typedef struct s_philos
+{
+	pthread_t		philos;
 	pthread_mutex_t	fork;
+}	t_philos;
 
-}	t_data;
+int	ft_check_arg(int ac, char **av, t_life *ph);
+int	ft_gettime(void);
 
+int	ft_atoi(const char *str);
 
 #endif
