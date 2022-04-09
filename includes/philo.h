@@ -19,25 +19,27 @@
 # include <string.h>
 # include <pthread.h>
 
-typedef struct s_life
-{
-	int	num;
-	int	t_die;
-	int	t_eat;
-	int	t_sleep;
-	int	plan;
-	
-}	t_life;
-
-typedef struct s_philos
+typedef struct s_philo
 {
 	pthread_t		philos;
 	pthread_mutex_t	fork;
-}	t_philos;
+	long int		ms;
+}	t_philo;
 
-int	ft_check_arg(int ac, char **av, t_life *ph);
-int	ft_gettime(void);
+typedef struct s_life
+{
+	int	num;
+	int		t_die;
+	int		t_eat;
+	int		t_sleep;
+	int		n_eat;
+	t_philo	*philos;
+}	t_life;
 
-int	ft_atoi(const char *str);
 
+int		ft_check_arg(int ac, char **av, t_life *ph);
+int		ft_gettime(void);
+
+int		ft_atoi(const char *str);
+void	ft_err(char *msg);
 #endif

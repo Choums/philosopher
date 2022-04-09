@@ -32,8 +32,7 @@ int	main(int ac, char **av)
 {
 	t_life			ph;
 	
-	// if (ft_check_arg(ac, av, &ph))
-	// 	exit(EXIT_FAILURE);
-	ft_gettime();
+	if (!ft_check_arg(ac, av, &ph))
+		ft_err("Invalid Arguments");
 	return (0);
 }
