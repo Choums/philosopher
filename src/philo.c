@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/04/07 17:05:17 by root             ###   ########.fr       */
+/*   Updated: 2022/04/13 17:39:54 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int	main(int ac, char **av)
 {
 	t_life			ph;
 	
-	// if (ft_check_arg(ac, av, &ph))
-	// 	exit(EXIT_FAILURE);
-	ft_gettime();
+	if (!ft_check_arg(ac, av, &ph))
+		ft_err("Invalid Arguments");
 	return (0);
 }

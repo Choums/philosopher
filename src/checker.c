@@ -6,11 +6,15 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/04/07 17:23:34 by root             ###   ########.fr       */
+/*   Updated: 2022/04/13 17:47:31 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+/*
+ *	Check les args. et init les structures.
+*/
 
 int	ft_check_arg(int ac, char **av, t_life *ph)
 {
@@ -24,9 +28,12 @@ int	ft_check_arg(int ac, char **av, t_life *ph)
 	ph->t_eat = ft_atoi(av[3]);
 	ph->t_sleep = ft_atoi(av[4]);
 	if (ac > 5)
-		ph->plan = ft_atoi(av[5]);
+		ph->n_eat = ft_atoi(av[5]);
 	else
-		ph->plan = 0;
+		ph->n_eat = 0;
+	ph->philos = (t_philo *)malloc(sizeof(t_philo) * (ph->num));
+	if (!ph->philos)
+		return (0);
 	return (1);
 }
 
@@ -46,6 +53,11 @@ int	ft_gettime(void)
 	struct timeval	ms;
 
 	gettimeofday(&ms, NULL);
-	printf("time: %ld ms\n", (ms.tv_sec * 1000) + (ms.tv_usec / 1000));
-	return (1);
+	return ((ms.tv_sec * 1000) + (ms.tv_usec / 1000));
+}
+
+void	ft_err(char *msg)
+{
+	printf("Error: %s\n", msg);
+	exit(EXIT_FAILURE);
 }
