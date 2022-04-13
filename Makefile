@@ -12,7 +12,7 @@ OBJ			=	${addprefix ${OBJDIR}/,${SRCS:.c=.o}}
 
 CC			=	clang
 
-CFLAGS		=	-fsanitize=address -g #-Wall -Wextra -Werror
+CFLAGS		=	-g#-fsanitize=address #-Wall -Wextra -Werror
 
 all:			obj ${FT_LIB} ${NAME}
 
