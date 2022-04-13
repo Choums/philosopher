@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/04/13 17:42:26 by root             ###   ########.fr       */
+/*   Updated: 2022/04/13 18:27:16 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ typedef struct s_philo
 {
 	pthread_t		philos;
 	pthread_mutex_t	fork;
-	long int		ms;
+	long int		lim;
+	long int		start_count;
+	int				is_alive; //1 alive 0 dead
 }	t_philo;
 
 typedef struct s_life
@@ -37,7 +39,7 @@ typedef struct s_life
 }	t_life;
 
 
-int		ft_check_arg(int ac, char **av, t_life *ph);
+int		ft_check_arg(int ac, char **av, t_life *lf);
 int		ft_gettime(void);
 
 int		ft_atoi(const char *str);

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/04/13 17:47:31 by root             ###   ########.fr       */
+/*   Updated: 2022/04/13 18:21:18 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,23 @@
  *	Check les args. et init les structures.
 */
 
-int	ft_check_arg(int ac, char **av, t_life *ph)
+int	ft_check_arg(int ac, char **av, t_life *lf)
 {
 	int	i;
 
 	i = 0;
 	if (ac < 5 || ac > 6)
 		return (0);
-	ph->num = ft_atoi(av[1]);
-	ph->t_die = ft_atoi(av[2]);
-	ph->t_eat = ft_atoi(av[3]);
-	ph->t_sleep = ft_atoi(av[4]);
+	lf->num = ft_atoi(av[1]);
+	lf->t_die = ft_atoi(av[2]);
+	lf->t_eat = ft_atoi(av[3]);
+	lf->t_sleep = ft_atoi(av[4]);
 	if (ac > 5)
-		ph->n_eat = ft_atoi(av[5]);
+		lf->n_eat = ft_atoi(av[5]);
 	else
-		ph->n_eat = 0;
-	ph->philos = (t_philo *)malloc(sizeof(t_philo) * (ph->num));
-	if (!ph->philos)
+		lf->n_eat = 0;
+	lf->philos = (t_philo *)malloc(sizeof(t_philo) * (lf->num));
+	if (!lf->philos)
 		return (0);
 	return (1);
 }
@@ -45,8 +45,8 @@ int	ft_check_arg(int ac, char **av, t_life *ph)
  *	------------------------
  *	Convertit les 2 donnees pour avoir un temps
  *		en millisecondes.
- *	1 sec -> 10^-3 ms	=> * 1000
- *	1 sec -> 10^-6 µs	=> / 1000
+ *	ms: 10^-3s	=> * 1000
+ *	µs: 10^-6s	=> / 1000
  */
 int	ft_gettime(void)
 {
