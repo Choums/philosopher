@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/07/29 14:44:28 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/07/31 17:25:54 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,6 @@ int	ft_check_arg(int ac, char **av, t_life *lf)
 		lf->n_eat = ft_atoi(av[5]);
 	else
 		lf->n_eat = 0;
-	i = 1;
-	while (i <= lf->num)
-	{
-		
-		i++;
-	}
-	lf->philos = (t_philo *)malloc(sizeof(t_philo) * (lf->num));
-	if (!lf->philos)
-		return (0);
 	return (1);
 }
 

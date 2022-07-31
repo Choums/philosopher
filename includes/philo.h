@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/07/29 14:58:42 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/07/31 17:49:31 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct s_philo
 	int				count;		// time of the philo's action
 	int				is_alive;	// bool
 
-	t_philo			next;		// point to next philo (last point to last)
-	t_philo			previous;	// point to previous philo (first point to last)
+	struct s_philo	*next;		// point to next philo (last point to last)
+	struct s_philo	*previous;	// point to previous philo (first point to last)
 }	t_philo;
 
 typedef struct s_life
@@ -47,7 +47,15 @@ typedef struct s_life
 int		ft_check_arg(int ac, char **av, t_life *lf);
 int		get_time(void);
 int		init_threads(t_life *lf);
-void	routine(void);
+void	routine(void *arg);
+
+/*	list */
+t_philo	*ft_lstnew(void);
+void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t));
+void	ft_lstadd_back(t_philo **alst, t_philo *new);
+void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t));
+t_philo	*ft_lstlast(t_philo *lst);
+void	del(pthread_t phil, pthread_mutex_t cur_fork);
 
 /*	Utils */
 int		ft_atoi(const char *str);

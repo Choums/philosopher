@@ -6,18 +6,19 @@ OBJDIR		=	obj
 
 SRCS		=	philo.c\
 				checker.c\
-				funct.c
+				funct.c\
+				lst_management.c\
 
 OBJ			=	${addprefix ${OBJDIR}/,${SRCS:.c=.o}}
 
 CC			=	clang
 
-CFLAGS		=	-g #-lpthread -Wall -Wextra #-Werror #-fsanitize=address
+CFLAGS		=	-g -Wall -Wextra #-Werror #-fsanitize=address
 
 all:			obj ${FT_LIB} ${NAME}
 
 ${NAME}:		${OBJ}
-				${CC} ${CFLAGS} ${OBJ} -o ${NAME}
+				${CC} ${CFLAGS} ${OBJ} -o ${NAME} -lpthread
 
 ${OBJDIR}/%.o:	${SRCDIR}/%.c
 				${CC} ${CFLAGS} ${FT_INC} -I ${INCDIR} -o $@ -c $<
