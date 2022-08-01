@@ -6,22 +6,23 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/07/31 17:47:54 by root             ###   ########.fr       */
+/*   Updated: 2022/08/01 19:01:12 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*ft_lstnew(void)
+t_philo	*ft_lstnew(int pos)
 {
 	t_philo *another;
 
 	another = malloc(sizeof(*another));
 	if (!another)
 		return (NULL);
-    pthread_create(&another->philo, NULL, &routine, NULL);
     another->count = 0;
     another->is_alive = 1;
+	another->pos = pos;
+	pthread_mutex_init(&(another->cur_fork), NULL);
 	another->next = NULL;
 	another->previous = NULL;
 	return (another);
@@ -84,5 +85,6 @@ void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t))
 */
 void	del(pthread_t phil, pthread_mutex_t cur_fork)
 {
-	
+	pthread_join(phil, NULL);
+	pthread_mutex_destroy(&cur_fork);
 }

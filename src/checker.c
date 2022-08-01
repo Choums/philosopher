@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/07/31 17:25:54 by root             ###   ########.fr       */
+/*   Updated: 2022/08/01 17:19:46 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,16 @@
 
 int	ft_check_arg(int ac, char **av, t_life *lf)
 {
-	int	i;
-
-	if (ac < 4 || ac > 5)
+	if (ac < 5 || ac > 6)
 		return (0);
 	lf->num = ft_atoi(av[1]);
 	lf->t_die = ft_atoi(av[2]);
 	lf->t_eat = ft_atoi(av[3]);
 	lf->t_sleep = ft_atoi(av[4]);
-	if (ac == 5)
+	if (ac == 6)
 		lf->n_eat = ft_atoi(av[5]);
 	else
-		lf->n_eat = 0;
+		lf->n_eat = -1;
 	return (1);
 }
 

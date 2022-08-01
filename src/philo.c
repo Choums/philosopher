@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/07/31 17:52:10 by root             ###   ########.fr       */
+/*   Updated: 2022/08/01 19:02:47 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,41 @@
 
 /*
  *	Init. les threads(philosophes) et debute la simu
- *	Soit boucle sur n_eat
- *	Soit boucle sur num
 */
 int	init_threads(t_life *lf)
 {
-	int	i;
+	int		i;
+	t_philo	*tmp;
 
-	i = 0;
+	i = 1;
 	if (lf->num > 1)
-		ft_lstnew();
-	while (++i < lf->num)	
-		ft_lstadd_back(&(lf->philos), ft_lstnew());
+		lf->philos = ft_lstnew(i);
+	while (++i <= lf->num)	
+		ft_lstadd_back(&(lf->philos), ft_lstnew(i));
+	tmp = lf->philos;
+	while (tmp)
+	{
+		pthread_create(&(tmp->philo), NULL, &routine, tmp);
+		tmp = tmp->next;
+	}
 	return (1);
 }
 
-
-void	routine(void *arg)
+/*
+ *	Routine des philos: manger, dormir, penser
+ *	La routine dure tant qu'un philo n'est pas mort ou si n_eat a été init
+ *	-------------------------------------
+ *	Fork
+ *	Le philo se met à manger s'il peut mutex sa fourchette et la suivante
+ *	
+*/
+void	*routine(void *phil)
 {
-	(void)arg;
+	t_philo	*tmp;
+	
+	tmp = (t_philo *)phil;
 	printf("created thread\n");
+	return (NULL);
 }
 /*
 	1->	number of philos.
@@ -52,5 +67,6 @@ int	main(int ac, char **av)
 	if (!ft_check_arg(ac, av, &lf))
 		ft_err("Invalid Arguments");
 	init_threads(&lf);
+	ft_lstclear(&(lf.philos), del);
 	return (0);
 }

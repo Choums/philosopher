@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/07/31 17:49:31 by root             ###   ########.fr       */
+/*   Updated: 2022/08/01 18:57:34 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_philo
 
 	int				count;		// time of the philo's action
 	int				is_alive;	// bool
+	int				pos;		// position around the table
 
 	struct s_philo	*next;		// point to next philo (last point to last)
 	struct s_philo	*previous;	// point to previous philo (first point to last)
@@ -47,10 +48,10 @@ typedef struct s_life
 int		ft_check_arg(int ac, char **av, t_life *lf);
 int		get_time(void);
 int		init_threads(t_life *lf);
-void	routine(void *arg);
+void	*routine(void *phil);
 
 /*	list */
-t_philo	*ft_lstnew(void);
+t_philo	*ft_lstnew(int pos);
 void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t));
 void	ft_lstadd_back(t_philo **alst, t_philo *new);
 void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t));
