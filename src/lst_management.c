@@ -6,13 +6,13 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/01 19:01:12 by root             ###   ########.fr       */
+/*   Updated: 2022/08/02 17:45:55 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*ft_lstnew(int pos)
+t_philo	*ft_lstnew(int pos, t_life *lf)
 {
 	t_philo *another;
 
@@ -23,6 +23,7 @@ t_philo	*ft_lstnew(int pos)
     another->is_alive = 1;
 	another->pos = pos;
 	pthread_mutex_init(&(another->cur_fork), NULL);
+	another->lf = lf;
 	another->next = NULL;
 	another->previous = NULL;
 	return (another);
