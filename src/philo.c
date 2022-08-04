@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/04 10:35:55 by root             ###   ########.fr       */
+/*   Updated: 2022/08/04 16:43:05 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,29 +56,36 @@ int	init_threads(t_life *lf)
 void	*routine(void *phil)
 {
 	t_philo	*tmp;
-	int		time;
 
 	tmp = (t_philo *)phil;
 	// printf("pos %d\n", tmp->pos);
 	// printf("---------\n");
 	// printf("cur: %p\nnex: %p\n", &tmp->cur_fork, &(*tmp->next_fork));
 	// printf("---------\n");
-	time = get_time();
-	while (tmp->count < tmp->lf->n_eat)
+	tmp->lf->start = get_time();
+	while (tmp->is_alive)
 	{
+		if (!(tmp->count < tmp->lf->n_eat))
+			break ;
 		pthread_mutex_lock(&tmp->cur_fork);
 		pthread_mutex_lock(&(*tmp->next_fork));
-		printf("phil %d has taken a fork\n", tmp->pos);
+		printf("%d phil %d has taken a fork\n", get_time() - tmp->lf->start, tmp->pos);
 		pthread_mutex_lock(&tmp->lf->mem);
-		printf("phil %d is eating\n", tmp->pos);
-		usleep(tmp->lf->t_eat * (int)1e3);
-		time = get_time();
+		printf("%d phil %d is eating\n", get_time() - tmp->lf->start, tmp->pos);
+		usleep(tmp->lf->t_eat * (int)1e3);;
+		tmp->ate = get_time();
 		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
 		pthread_mutex_unlock(&(*tmp->next_fork));
-		printf("%d phil %d is sleeping\n", get_time() - time, tmp->pos);
+		printf("%d phil %d is sleeping\n", get_time() - tmp->lf->start, tmp->pos);
 		usleep(tmp->lf->t_sleep * (int)1e3);
-		printf("phil %d is thinking\n", tmp->pos);
+		if ((get_time() - tmp->lf->start) >= (tmp->ate - tmp->lf->start))
+		{
+			tmp->is_alive = 0;
+			printf("%d phil %d died\n", get_time() - tmp->lf->start, tmp->pos);
+			break ;
+		}
+		printf("%d phil %d is thinking\n", get_time() - tmp->lf->start, tmp->pos);
 		tmp->count++;
 	}
 	return (NULL);

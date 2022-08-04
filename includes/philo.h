@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/04 09:29:08 by root             ###   ########.fr       */
+/*   Updated: 2022/08/04 16:33:19 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_philo
 	int				count;		// number of time philo ate
 	int				is_alive;	// bool
 	int				pos;		// position around the table
+	int				ate;		// last time the philo ate
 
 	struct s_life	*lf;		// philo can access to simulation info
 	struct s_philo	*next;		// point to next philo
@@ -42,6 +43,7 @@ typedef struct s_life
 	int				t_eat;		// time to eating
 	int				t_sleep;	// time of sleep
 	int				n_eat;		// number of time the philo eats
+	int				start;		// time at the beginning of the simulation
 	pthread_mutex_t	mem;		// memory used by threads
 	t_philo	*philos;
 }	t_life;
