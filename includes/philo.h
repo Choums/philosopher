@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/02 20:16:03 by root             ###   ########.fr       */
+/*   Updated: 2022/08/04 09:29:08 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ typedef struct s_philo
 {
 	pthread_t		philo;		// thread
 	pthread_mutex_t	cur_fork;	// philo's fork
-	// pthread_mutex_t	*next_fork;	// seatmate's fork (last point to first)
+	pthread_mutex_t	*next_fork;	// seatmate's fork (last point to first)
 
-	int				count;		// time of the philo's action
+	int				count;		// number of time philo ate
 	int				is_alive;	// bool
 	int				pos;		// position around the table
 
