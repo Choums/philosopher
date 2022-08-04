@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/08/04 10:02:11 by root             ###   ########.fr       */
+/*   Updated: 2022/08/04 18:59:14 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	get_time(void)
 	struct timeval	ms;
 
 	gettimeofday(&ms, NULL);
-	return ((ms.tv_sec * (int)1e3) + (ms.tv_usec * (int)1e-3));
+	return ((ms.tv_sec * 1000) + (ms.tv_usec / 1000));
 }
 
 void	ft_err(char *msg)

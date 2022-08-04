@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/04 16:43:05 by root             ###   ########.fr       */
+/*   Updated: 2022/08/04 18:58:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,21 +65,21 @@ void	*routine(void *phil)
 	tmp->lf->start = get_time();
 	while (tmp->is_alive)
 	{
-		if (!(tmp->count < tmp->lf->n_eat))
+		if (tmp->count == tmp->lf->n_eat)
 			break ;
 		pthread_mutex_lock(&tmp->cur_fork);
 		pthread_mutex_lock(&(*tmp->next_fork));
 		printf("%d phil %d has taken a fork\n", get_time() - tmp->lf->start, tmp->pos);
 		pthread_mutex_lock(&tmp->lf->mem);
 		printf("%d phil %d is eating\n", get_time() - tmp->lf->start, tmp->pos);
-		usleep(tmp->lf->t_eat * (int)1e3);;
+		usleep(tmp->lf->t_eat * 1000);;
 		tmp->ate = get_time();
 		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
 		pthread_mutex_unlock(&(*tmp->next_fork));
 		printf("%d phil %d is sleeping\n", get_time() - tmp->lf->start, tmp->pos);
-		usleep(tmp->lf->t_sleep * (int)1e3);
-		if ((get_time() - tmp->lf->start) >= (tmp->ate - tmp->lf->start))
+		usleep(tmp->lf->t_sleep * 1000);
+		if ((tmp->ate - tmp->lf->start) >= (get_time() - tmp->lf->start))
 		{
 			tmp->is_alive = 0;
 			printf("%d phil %d died\n", get_time() - tmp->lf->start, tmp->pos);
