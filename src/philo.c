@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/04 18:58:39 by root             ###   ########.fr       */
+/*   Updated: 2022/08/05 21:09:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ int	init_threads(t_life *lf)
 		pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
+	tmp = lf->philos;
+	while (1)
+	{
+		if (!tmp->is_alive)
+		{
+			printf("--- stop ---\n");
+			ft_lstclear(&(lf->philos), del);
+			return (0);
+		}
+		if (!tmp->next)
+			tmp = lf->philos;
+		else
+			tmp = tmp->next;
+	}
 	return (1);
 }
 
@@ -72,14 +86,14 @@ void	*routine(void *phil)
 		printf("%d phil %d has taken a fork\n", get_time() - tmp->lf->start, tmp->pos);
 		pthread_mutex_lock(&tmp->lf->mem);
 		printf("%d phil %d is eating\n", get_time() - tmp->lf->start, tmp->pos);
-		usleep(tmp->lf->t_eat * 1000);;
+		usleep(tmp->lf->t_eat * 1000);
 		tmp->ate = get_time();
 		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
 		pthread_mutex_unlock(&(*tmp->next_fork));
 		printf("%d phil %d is sleeping\n", get_time() - tmp->lf->start, tmp->pos);
 		usleep(tmp->lf->t_sleep * 1000);
-		if ((tmp->ate - tmp->lf->start) >= (get_time() - tmp->lf->start))
+		if ((tmp->ate - tmp->lf->start) >= tmp->lf->t_eat)
 		{
 			tmp->is_alive = 0;
 			printf("%d phil %d died\n", get_time() - tmp->lf->start, tmp->pos);
@@ -110,7 +124,7 @@ int	main(int ac, char **av)
 	// printf("t: %d | %d\n", get_time(), get_time() - time);
 	// usleep(2000 * (int)1e3);
 	// printf("%d\n", get_time() - time);
-	init_threads(&lf);
-	ft_lstclear(&(lf.philos), del);
+	if (init_threads(&lf))
+		ft_lstclear(&(lf.philos), del);
 	return (0);
 }
