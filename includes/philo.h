@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/06 16:38:26 by root             ###   ########.fr       */
+/*   Updated: 2022/08/06 16:58:57 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_life
 	int				died;		// bool to check if a philo died
 
 	pthread_mutex_t	mem;		// memory used by threads
+	pthread_mutex_t	dis;		// one thread can display at a time
 	t_philo	*philos;			// philosophes
 }	t_life;
 
@@ -54,6 +55,7 @@ int		ft_check_arg(int ac, char **av, t_life *lf);
 int		get_time(void);
 int		init_threads(t_life *lf);
 void	*routine(void *phil);
+void	display(t_philo *tmp, int timer, char *status);
 
 /*	list */
 t_philo	*ft_lstnew(int pos, t_life *lf);

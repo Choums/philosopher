@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/06 16:46:42 by root             ###   ########.fr       */
+/*   Updated: 2022/08/06 17:00:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,28 +69,39 @@ void	*routine(void *phil)
 	{
 		pthread_mutex_lock(&tmp->cur_fork);
 		pthread_mutex_lock(&(*tmp->next_fork));
-		printf("%d phil %d has taken a fork\n", get_time() - tmp->lf->start, tmp->pos);
+		// printf("%d phil %d has taken a fork\n", get_time() - tmp->lf->start, tmp->pos);
+		display(tmp, get_time() - tmp->lf->start, "has taken a fork");
 		pthread_mutex_lock(&tmp->lf->mem);
-		printf("%d phil %d is eating\n", get_time() - tmp->lf->start, tmp->pos);
+		// printf("%d phil %d is eating\n", get_time() - tmp->lf->start, tmp->pos);
+		display(tmp, get_time() - tmp->lf->start, "is eating");
 		usleep(tmp->lf->t_eat * 1000);
 		tmp->ate = get_time();
 		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
 		pthread_mutex_unlock(&(*tmp->next_fork));
-		printf("%d phil %d is sleeping\n", get_time() - tmp->lf->start, tmp->pos);
+		// printf("%d phil %d is sleeping\n", get_time() - tmp->lf->start, tmp->pos);
+		display(tmp, get_time() - tmp->lf->start, "is sleeping");
 		usleep(tmp->lf->t_sleep * 1000);
 		if ((get_time() - tmp->ate) > tmp->lf->t_die)
 		{
 			tmp->lf->died = 1;
-			printf("%d phil %d died\n", get_time() - tmp->lf->start, tmp->pos);
+			// printf("%d phil %d died\n", get_time() - tmp->lf->start, tmp->pos);
+			display(tmp, get_time() - tmp->lf->start, "died");
 			break ;
 		}
-		printf("%d phil %d is thinking\n", get_time() - tmp->lf->start, tmp->pos);
+		// printf("%d phil %d is thinking\n", get_time() - tmp->lf->start, tmp->pos);
+		display(tmp, get_time() - tmp->lf->start, "is thinking");
 		tmp->count++;
 	}
 	return (NULL);
 }
 
+void	display(t_philo *tmp, int timer, char *status)
+{
+	pthread_mutex_lock(&(tmp->lf->dis));
+	printf("%d phil %d %s\n", timer, tmp->pos, status);
+	pthread_mutex_unlock(&(tmp->lf->dis));
+}
 /*
 	1->	number of philos.
 	2->	time to die => (lim < gettime - start_count)
