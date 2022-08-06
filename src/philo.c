@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/05 21:09:39 by root             ###   ########.fr       */
+/*   Updated: 2022/08/06 16:46:42 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,8 @@ int	init_threads(t_life *lf)
 		pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
-	tmp = lf->philos;
-	while (1)
-	{
-		if (!tmp->is_alive)
-		{
-			printf("--- stop ---\n");
-			ft_lstclear(&(lf->philos), del);
-			return (0);
-		}
-		if (!tmp->next)
-			tmp = lf->philos;
-		else
-			tmp = tmp->next;
-	}
 	return (1);
 }
-
 
 /*
  *	Routine des philos: manger, dormir, penser
@@ -66,6 +51,9 @@ int	init_threads(t_life *lf)
  *	Le philo se met à manger s'il peut mutex sa fourchette et la suivante
  *	Attention => les threads ce lancent quasi en meme temps, le 2nd lock son cur
  *					avant que le 1er ne puisse lock le next ==> Error
+ *	---
+ *	Chaque action doit se faire lock au préalable puis unlock pour éviter tout écrasement
+ *	L'affichage doit aussi faire part d'un lock
 */
 void	*routine(void *phil)
 {
@@ -77,10 +65,8 @@ void	*routine(void *phil)
 	// printf("cur: %p\nnex: %p\n", &tmp->cur_fork, &(*tmp->next_fork));
 	// printf("---------\n");
 	tmp->lf->start = get_time();
-	while (tmp->is_alive)
+	while (!tmp->lf->died && (tmp->count != tmp->lf->n_eat))
 	{
-		if (tmp->count == tmp->lf->n_eat)
-			break ;
 		pthread_mutex_lock(&tmp->cur_fork);
 		pthread_mutex_lock(&(*tmp->next_fork));
 		printf("%d phil %d has taken a fork\n", get_time() - tmp->lf->start, tmp->pos);
@@ -93,9 +79,9 @@ void	*routine(void *phil)
 		pthread_mutex_unlock(&(*tmp->next_fork));
 		printf("%d phil %d is sleeping\n", get_time() - tmp->lf->start, tmp->pos);
 		usleep(tmp->lf->t_sleep * 1000);
-		if ((tmp->ate - tmp->lf->start) >= tmp->lf->t_eat)
+		if ((get_time() - tmp->ate) > tmp->lf->t_die)
 		{
-			tmp->is_alive = 0;
+			tmp->lf->died = 1;
 			printf("%d phil %d died\n", get_time() - tmp->lf->start, tmp->pos);
 			break ;
 		}
@@ -119,12 +105,7 @@ int	main(int ac, char **av)
 
 	if (!ft_check_arg(ac, av, &lf))
 		ft_err("Invalid Arguments");
-	// int time = get_time();
-	// printf("time: %d\n", time);
-	// printf("t: %d | %d\n", get_time(), get_time() - time);
-	// usleep(2000 * (int)1e3);
-	// printf("%d\n", get_time() - time);
-	if (init_threads(&lf))
-		ft_lstclear(&(lf.philos), del);
+	init_threads(&lf);
+	ft_lstclear(&(lf.philos), del);
 	return (0);
 }

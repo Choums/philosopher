@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/05 21:24:57 by root             ###   ########.fr       */
+/*   Updated: 2022/08/06 16:38:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_philo	*ft_lstnew(int pos, t_life *lf)
 	if (!another)
 		return (NULL);
     another->count = 0;
-    another->is_alive = 1;
 	another->pos = pos;
 	another->ate = 0;
 	pthread_mutex_init(&(another->cur_fork), NULL);
