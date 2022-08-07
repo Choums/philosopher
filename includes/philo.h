@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/06 16:58:57 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 11:51:55 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_philo
 	int				count;		// number of time philo ate
 	int				pos;		// position around the table
 	int				ate;		// last time the philo ate
+	int				eating;		// to warn the checking thread that the philo is currently eating
 
 	struct s_life	*lf;		// philo can access to simulation info
 	struct s_philo	*next;		// point to next philo
@@ -51,11 +52,12 @@ typedef struct s_life
 }	t_life;
 
 
-int		ft_check_arg(int ac, char **av, t_life *lf);
+int		check_arg(int ac, char **av, t_life *lf);
+int		check_neg_arg(t_life *lf);
 int		get_time(void);
 int		init_threads(t_life *lf);
 void	*routine(void *phil);
-void	display(t_philo *tmp, int timer, char *status);
+int		display(t_philo *tmp, int timer, char *status);
 
 /*	list */
 t_philo	*ft_lstnew(int pos, t_life *lf);
@@ -67,5 +69,6 @@ void	del(pthread_t phil, pthread_mutex_t cur_fork);
 
 /*	Utils */
 int		ft_atoi(const char *str);
+size_t	ft_strlen(const char *str);
 void	ft_err(char *msg);
 #endif

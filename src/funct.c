@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:10:06 by root              #+#    #+#             */
-/*   Updated: 2022/04/07 16:10:52 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 11:20:43 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,16 @@ int	ft_atoi(const char *str)
 	if (nbr > 2147483648 && sign == -1)
 		return (0);
 	return ((int)((long)nbr * sign));
+}
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str && str[i])
+		i++;
+	return (i);
 }

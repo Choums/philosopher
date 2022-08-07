@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/08/06 16:59:14 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 12:20:18 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@
  *	Check les args. et init les structures.
 */
 
-int	ft_check_arg(int ac, char **av, t_life *lf)
+int	check_arg(int ac, char **av, t_life *lf)
 {
 	if (ac < 5 || ac > 6)
 		return (0);
 	lf->num = ft_atoi(av[1]);
-	if (lf->num < 1)
-		return (0);
 	lf->t_die = ft_atoi(av[2]);
 	lf->t_eat = ft_atoi(av[3]);
 	lf->t_sleep = ft_atoi(av[4]);
@@ -30,10 +28,25 @@ int	ft_check_arg(int ac, char **av, t_life *lf)
 		lf->n_eat = ft_atoi(av[5]);
 	else
 		lf->n_eat = -1;
+	if (ac == 6 && ft_atoi(av[5]) == -1)
+		return (0);
 	lf->died = 0;
 	lf->start = 0;
+	if (!check_neg_arg(lf))
+		return (0);
 	pthread_mutex_init(&(lf->mem), NULL);
 	pthread_mutex_init(&(lf->dis), NULL);
+	return (1);
+}
+
+int	check_neg_arg(t_life *lf)
+{
+	if (lf->num <= 0)
+		return (0);
+	if (lf->t_die < 0 || lf->t_eat < 0 || lf->t_sleep < 0)
+		return (0);
+	if (lf->n_eat < -1)
+		return (0);
 	return (1);
 }
 
@@ -60,6 +73,8 @@ int	get_time(void)
 
 void	ft_err(char *msg)
 {
-	printf("Error: %s\n", msg);
+	write(STDERR_FILENO, "Error: ", 7);
+	write(STDERR_FILENO, msg, ft_strlen(msg));
+	write(STDERR_FILENO, "\n", 1);
 	exit(EXIT_FAILURE);
 }
