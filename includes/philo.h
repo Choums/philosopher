@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/07 11:51:55 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 20:24:48 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_life
 
 	pthread_mutex_t	mem;		// memory used by threads
 	pthread_mutex_t	dis;		// one thread can display at a time
-	t_philo	*philos;			// philosophes
+	t_philo	*philos;			// list of philosophes
 }	t_life;
 
 
@@ -58,6 +58,8 @@ int		get_time(void);
 int		init_threads(t_life *lf);
 void	*routine(void *phil);
 int		display(t_philo *tmp, int timer, char *status);
+void	init_forks(t_life *lf);
+int		watcher(t_life *lf);
 
 /*	list */
 t_philo	*ft_lstnew(int pos, t_life *lf);
