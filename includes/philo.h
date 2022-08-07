@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/07 20:24:48 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 20:30:23 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ void	del(pthread_t phil, pthread_mutex_t cur_fork);
 /*	Utils */
 int		ft_atoi(const char *str);
 size_t	ft_strlen(const char *str);
-void	ft_err(char *msg);
+int		ft_err(char *msg);
 #endif

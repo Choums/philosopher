@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/07 20:25:05 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 20:30:29 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int	main(int ac, char **av)
 	t_life			lf;
 
 	if (!check_arg(ac, av, &lf))
-		ft_err("Invalid Arguments");
+		return (ft_err("Invalid Arguments"));
 	init_threads(&lf);
 	ft_lstclear(&(lf.philos), del);
 	return (0);

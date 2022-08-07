@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/08/07 12:20:18 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 20:30:18 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	get_time(void)
 	return ((ms.tv_sec * 1000) + (ms.tv_usec / 1000));
 }
 
-void	ft_err(char *msg)
+int	ft_err(char *msg)
 {
 	write(STDERR_FILENO, "Error: ", 7);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	write(STDERR_FILENO, "\n", 1);
-	exit(EXIT_FAILURE);
+	return (1);
 }
