@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/07 12:28:35 by root             ###   ########.fr       */
+/*   Updated: 2022/08/07 12:32:27 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	init_threads(t_life *lf)
 			// printf("killed 1\n");
 			lf->died = 1;
 			display(tmp, get_time() - tmp->lf->start, "died");
-			exit(1);
+			exit(1); // INTERDIT
 		}
 		else if (tmp->ate && !tmp->eating && get_time() - tmp->ate >= lf->t_die)
 		{
 			// printf("killed 2\n");
 			lf->died = 1;
 			display(tmp, get_time() - tmp->lf->start, "died");
-			exit(1);
+			exit(1); // INTERDIT
 		}
 		if (!tmp->next)
 			tmp = lf->philos;
