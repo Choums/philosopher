@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/07 20:30:23 by root             ###   ########.fr       */
+/*   Updated: 2022/08/09 19:38:22 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_life
 	t_philo	*philos;			// list of philosophes
 }	t_life;
 
-
 int		check_arg(int ac, char **av, t_life *lf);
 int		check_neg_arg(t_life *lf);
 int		get_time(void);
@@ -63,11 +62,14 @@ int		watcher(t_life *lf);
 
 /*	list */
 t_philo	*ft_lstnew(int pos, t_life *lf);
-void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t));
+void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t,
+				pthread_mutex_t, pthread_mutex_t));
 void	ft_lstadd_back(t_philo **alst, t_philo *new);
-void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t));
+void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t,
+				pthread_mutex_t, pthread_mutex_t));
 t_philo	*ft_lstlast(t_philo *lst);
-void	del(pthread_t phil, pthread_mutex_t cur_fork);
+void	del(pthread_t phil, pthread_mutex_t cur_fork,
+			pthread_mutex_t mem, pthread_mutex_t dis);
 
 /*	Utils */
 int		ft_atoi(const char *str);

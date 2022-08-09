@@ -7,13 +7,14 @@ OBJDIR		=	obj
 SRCS		=	philo.c\
 				checker.c\
 				funct.c\
-				lst_management.c\
+				lst_manager.c\
+				th_manager.c\
 
 OBJ			=	${addprefix ${OBJDIR}/,${SRCS:.c=.o}}
 
 CC			=	clang
 
-CFLAGS		=	-g -Wall -Wextra #-fsanitize=address
+CFLAGS		=	-g3 -Wall -Wextra -fsanitize=thread
 
 all:			obj ${FT_LIB} ${NAME}
 

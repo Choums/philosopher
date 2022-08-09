@@ -3,88 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/07 20:30:29 by root             ###   ########.fr       */
+/*   Updated: 2022/08/09 19:23:23 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
 /*
- *	Init. les threads(philosophes) et debute la simu
-*/
-int	init_threads(t_life *lf)
-{
-	int		i;
-	t_philo	*tmp;
-
-	i = 1;
-	if (lf->num > 0)
-		lf->philos = ft_lstnew(i++, lf);
-	while (i <= lf->num)
-		ft_lstadd_back(&(lf->philos), ft_lstnew(i++, lf));
-	init_forks(lf);
-	tmp = lf->philos;
-	while (tmp)
-	{
-		pthread_create(&(tmp->philo), NULL, &routine, tmp);
-		tmp = tmp->next;
-	}
-	return (watcher(lf));
-}
-
-void	init_forks(t_life *lf)
-{
-	t_philo	*tmp;
-	t_philo	*fst;
-	
-	tmp = lf->philos;
-	fst = lf->philos;
-	while (tmp->pos < tmp->lf->num)
-	{
-		tmp->next_fork = &tmp->next->cur_fork;
-		tmp = tmp->next;
-	}
-	tmp->next_fork = &fst->cur_fork;
-}
-
-int	watcher(t_life *lf)
-{
-	t_philo	*tmp;
-
-	tmp = lf->philos;
-	while (1)
-	{
-		if (tmp->count == tmp->lf->n_eat)
-			return (1);
-		if (!tmp->ate && !tmp->eating && get_time() - lf->start >= lf->t_die)
-		{
-			lf->died = 1;
-			display(tmp, get_time() - tmp->lf->start, "died");
-			return (0);
-		}
-		else if (tmp->ate && !tmp->eating && get_time() - tmp->ate >= lf->t_die)
-		{
-			lf->died = 1;
-			display(tmp, get_time() - tmp->lf->start, "died");
-			return (0);
-		}
-		if (!tmp->next)
-			tmp = lf->philos;
-		else
-			tmp = tmp->next;
-	}
-	return (1);
-}
-
-/*
  *	Routine des philos: manger, dormir, penser
  *	La routine dure tant qu'un philo n'est pas mort ou si n_eat a été init
  *	-------------------------------------
  *	Le philo se met à manger s'il peut mutex sa fourchette et la suivante
- *	Chaque action doit se faire lock au préalable puis unlock pour éviter tout écrasement
+ *	Chaque action doit se faire lock au préalable puis unlock pour
+ *		éviter tout écrasement
  *	L'affichage doit aussi faire part d'un lock
  *	L'affichage vérifie si tout le monde est en vie avant d'afficher
 */
@@ -97,11 +31,14 @@ void	*routine(void *phil)
 	// printf("---------\n");
 	// printf("cur: %p\nnex: %p\n", &tmp->cur_fork, &(*tmp->next_fork));
 	// printf("---------\n");
-	tmp->lf->start = get_time();
+	// tmp->lf->start = get_time();
 	while (!tmp->lf->died && (tmp->count != tmp->lf->n_eat))
 	{
 		pthread_mutex_lock(&tmp->cur_fork);
-		pthread_mutex_lock(&(*tmp->next_fork));
+		if (&(*tmp->next_fork))
+			pthread_mutex_lock(&(*tmp->next_fork));
+		else
+			return (NULL);
 		if (!display(tmp, get_time() - tmp->lf->start, "has taken a fork"))
 			return (NULL);
 		pthread_mutex_lock(&tmp->lf->mem);
@@ -129,7 +66,7 @@ int	display(t_philo *tmp, int timer, char *status)
 	pthread_mutex_lock(&(tmp->lf->dis));
 	if (ft_strlen(status) != 4 && tmp->lf->died)
 		return (0);
-	printf("%d phil %d %s\n", timer, tmp->pos, status);
+	printf("%d %d %s\n", timer, tmp->pos, status);
 	pthread_mutex_unlock(&(tmp->lf->dis));
 	return (1);
 }

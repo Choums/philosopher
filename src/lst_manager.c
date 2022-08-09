@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_management.c                                   :+:      :+:    :+:   */
+/*   lst_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/07 11:52:23 by root             ###   ########.fr       */
+/*   Updated: 2022/08/09 19:38:42 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_philo	*ft_lstnew(int pos, t_life *lf)
 {
-	t_philo *another;
+	t_philo	*another;
 
 	another = malloc(sizeof(*another));
 	if (!another)
@@ -30,7 +30,8 @@ t_philo	*ft_lstnew(int pos, t_life *lf)
 	return (another);
 }
 
-void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t))
+void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t,
+					pthread_mutex_t, pthread_mutex_t))
 {
 	t_philo	*tmp;
 
@@ -73,20 +74,12 @@ t_philo	*ft_lstlast(t_philo *lst)
 	return (lst);
 }
 
-void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t))
+void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t,
+					pthread_mutex_t, pthread_mutex_t))
 {
 	if (lst && del)
 	{
 		(*del)(lst->philo, lst->cur_fork);
 		free(lst);
 	}
-}
-
-/*
- *	free la fourchette et le philo
-*/
-void	del(pthread_t phil, pthread_mutex_t cur_fork)
-{
-	pthread_join(phil, NULL);
-	pthread_mutex_destroy(&cur_fork);
 }
