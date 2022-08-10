@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/09 19:38:42 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/10 20:24:10 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,16 @@ t_philo	*ft_lstnew(int pos, t_life *lf)
 	another->pos = pos;
 	another->ate = 0;
 	another->eating = 0;
+	another->start = 0;
 	pthread_mutex_init(&(another->cur_fork), NULL);
+	pthread_mutex_init(&(another->check), NULL);
 	another->lf = lf;
 	another->next = NULL;
 	another->previous = NULL;
 	return (another);
 }
 
-void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t,
-					pthread_mutex_t, pthread_mutex_t))
+void	ft_lstclear(t_philo **lst, t_life *lf, void (*del)(pthread_t, pthread_mutex_t, pthread_mutex_t))
 {
 	t_philo	*tmp;
 
@@ -45,6 +46,8 @@ void	ft_lstclear(t_philo **lst, void (*del)(pthread_t, pthread_mutex_t,
 		}
 		ft_lstdelone(*lst, del);
 		*lst = NULL;
+		pthread_mutex_destroy(&(lf->mem));
+		pthread_mutex_destroy(&(lf->dis));
 	}
 }
 
@@ -74,12 +77,11 @@ t_philo	*ft_lstlast(t_philo *lst)
 	return (lst);
 }
 
-void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t,
-					pthread_mutex_t, pthread_mutex_t))
+void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t, pthread_mutex_t))
 {
 	if (lst && del)
 	{
-		(*del)(lst->philo, lst->cur_fork);
+		(*del)(lst->philo, lst->cur_fork, lst->check);
 		free(lst);
 	}
 }

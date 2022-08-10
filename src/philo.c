@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/09 19:23:23 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/10 20:11:58 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,45 @@ void	*routine(void *phil)
 	// printf("---------\n");
 	// printf("cur: %p\nnex: %p\n", &tmp->cur_fork, &(*tmp->next_fork));
 	// printf("---------\n");
-	// tmp->lf->start = get_time();
+	tmp->start = get_time();
 	while (!tmp->lf->died && (tmp->count != tmp->lf->n_eat))
 	{
-		pthread_mutex_lock(&tmp->cur_fork);
-		if (&(*tmp->next_fork))
-			pthread_mutex_lock(&(*tmp->next_fork));
+		if (tmp->pos % 2)
+		{
+			if (&(*tmp->next_fork))
+				pthread_mutex_lock(&(*tmp->next_fork));
+			else
+				return (NULL);	
+			pthread_mutex_lock(&tmp->cur_fork);
+		}
 		else
-			return (NULL);
-		if (!display(tmp, get_time() - tmp->lf->start, "has taken a fork"))
+		{
+			pthread_mutex_lock(&tmp->cur_fork);
+			if (&(*tmp->next_fork))
+				pthread_mutex_lock(&(*tmp->next_fork));
+			else
+				return (NULL);	
+		}
+		pthread_mutex_lock(&(tmp->check));
+		if (!display(tmp, get_time() - tmp->start, "has taken a fork"))
 			return (NULL);
 		pthread_mutex_lock(&tmp->lf->mem);
-		if (!display(tmp, get_time() - tmp->lf->start, "is eating"))
-			return (NULL);
 		tmp->eating = 1;
+		if (!display(tmp, get_time() - tmp->start, "is eating"))
+			return (NULL);
 		usleep(tmp->lf->t_eat * 1000);
 		tmp->ate = get_time();
 		tmp->eating = 0;
 		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
 		pthread_mutex_unlock(&(*tmp->next_fork));
-		if (!display(tmp, get_time() - tmp->lf->start, "is sleeping"))
+		if (!display(tmp, get_time() - tmp->start, "is sleeping"))
 			return (NULL);
 		usleep(tmp->lf->t_sleep * 1000);
-		if (!display(tmp, get_time() - tmp->lf->start, "is thinking"))
+		if (!display(tmp, get_time() - tmp->start, "is thinking"))
 			return (NULL);
 		tmp->count++;
+		pthread_mutex_unlock(&(tmp->check));
 	}
 	return (NULL);
 }
@@ -86,6 +99,6 @@ int	main(int ac, char **av)
 	if (!check_arg(ac, av, &lf))
 		return (ft_err("Invalid Arguments"));
 	init_threads(&lf);
-	ft_lstclear(&(lf.philos), del);
+	ft_lstclear(&(lf.philos), &lf, del);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   th_manager.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/09 19:33:16 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/10 20:26:53 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	init_threads(t_life *lf)
 	tmp = lf->philos;
 	while (tmp)
 	{
-		lf->start = get_time();
 		pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
@@ -64,20 +63,24 @@ int	watcher(t_life *lf)
 	tmp = lf->philos;
 	while (1)
 	{
-		if (tmp->count == tmp->lf->n_eat)
-			return (1);
-		if (!tmp->ate && !tmp->eating && get_time() - lf->start >= lf->t_die)
+		pthread_mutex_lock(&(tmp->check));
+		// if (tmp->count == tmp->lf->n_eat)
+		// 	return (pthread_mutex_unlock(&(tmp->check)));
+		if (!tmp->ate && !tmp->eating && get_time() - tmp->start >= lf->t_die)
 		{
 			lf->died = 1;
-			display(tmp, get_time() - tmp->lf->start, "died");
+			display(tmp, get_time() - tmp->start, "died");
+			pthread_mutex_unlock(&(tmp->check));
 			return (0);
 		}
 		else if (tmp->ate && !tmp->eating && get_time() - tmp->ate >= lf->t_die)
 		{
 			lf->died = 1;
-			display(tmp, get_time() - tmp->lf->start, "died");
+			display(tmp, get_time() - tmp->start, "died");
+			pthread_mutex_unlock(&(tmp->check));
 			return (0);
 		}
+		pthread_mutex_unlock(&(tmp->check));
 		if (!tmp->next)
 			tmp = lf->philos;
 		else
@@ -89,11 +92,9 @@ int	watcher(t_life *lf)
 /*
  *	free la fourchette et le philo
 */
-void	del(pthread_t phil, pthread_mutex_t cur_fork,
-			pthread_mutex_t mem, pthread_mutex_t dis)
+void	del(pthread_t phil, pthread_mutex_t cur_fork, pthread_mutex_t check)
 {
 	pthread_join(phil, NULL);
 	pthread_mutex_destroy(&cur_fork);
-	pthread_mutex_destroy(&mem);
-	pthread_mutex_destroy(&dis);
+	pthread_mutex_destroy(&check);
 }

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/08/07 20:30:18 by root             ###   ########.fr       */
+/*   Updated: 2022/08/10 19:53:46 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	check_arg(int ac, char **av, t_life *lf)
 	if (ac == 6 && ft_atoi(av[5]) == -1)
 		return (0);
 	lf->died = 0;
-	lf->start = 0;
 	if (!check_neg_arg(lf))
 		return (0);
 	pthread_mutex_init(&(lf->mem), NULL);
