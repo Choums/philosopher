@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/10 20:26:53 by root             ###   ########.fr       */
+/*   Updated: 2022/08/10 20:58:41 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	watcher(t_life *lf)
 	while (1)
 	{
 		pthread_mutex_lock(&(tmp->check));
-		// if (tmp->count == tmp->lf->n_eat)
-		// 	return (pthread_mutex_unlock(&(tmp->check)));
+		if (tmp->count == tmp->lf->n_eat)
+			return (pthread_mutex_unlock(&(tmp->check)));
 		if (!tmp->ate && !tmp->eating && get_time() - tmp->start >= lf->t_die)
 		{
 			lf->died = 1;

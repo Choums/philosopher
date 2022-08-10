@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/10 20:11:58 by root             ###   ########.fr       */
+/*   Updated: 2022/08/10 20:55:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@
  *		éviter tout écrasement
  *	L'affichage doit aussi faire part d'un lock
  *	L'affichage vérifie si tout le monde est en vie avant d'afficher
+ *	printf("pos %d\n", tmp->pos);
+ *	printf("---------\n");
+ *	printf("cur: %p\nnex: %p\n", &tmp->cur_fork, &(*tmp->next_fork));
+ *	printf("---------\n");
 */
 void	*routine(void *phil)
 {
 	t_philo	*tmp;
 
 	tmp = (t_philo *)phil;
-	// printf("pos %d\n", tmp->pos);
-	// printf("---------\n");
-	// printf("cur: %p\nnex: %p\n", &tmp->cur_fork, &(*tmp->next_fork));
-	// printf("---------\n");
 	tmp->start = get_time();
-	while (!tmp->lf->died && (tmp->count != tmp->lf->n_eat))
+	while (tmp->count != tmp->lf->n_eat)
 	{
 		if (tmp->pos % 2)
 		{
