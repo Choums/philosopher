@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/10 20:58:41 by root             ###   ########.fr       */
+/*   Updated: 2022/08/11 18:36:30 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ int	init_threads(t_life *lf)
 		ft_lstadd_back(&(lf->philos), ft_lstnew(i++, lf));
 	init_forks(lf);
 	tmp = lf->philos;
+	pthread_mutex_lock(&(lf->starter));
 	while (tmp)
 	{
 		pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
+	pthread_mutex_unlock(&(lf->starter));
 	return (watcher(lf));
 }
 
@@ -64,20 +66,20 @@ int	watcher(t_life *lf)
 	while (1)
 	{
 		pthread_mutex_lock(&(tmp->check));
-		if (tmp->count == tmp->lf->n_eat)
-			return (pthread_mutex_unlock(&(tmp->check)));
+		// if (tmp->count == tmp->lf->n_eat)
+		// 	return (pthread_mutex_unlock(&(tmp->check)));
 		if (!tmp->ate && !tmp->eating && get_time() - tmp->start >= lf->t_die)
 		{
 			lf->died = 1;
-			display(tmp, get_time() - tmp->start, "died");
 			pthread_mutex_unlock(&(tmp->check));
+			display(tmp, "died");
 			return (0);
 		}
 		else if (tmp->ate && !tmp->eating && get_time() - tmp->ate >= lf->t_die)
 		{
 			lf->died = 1;
-			display(tmp, get_time() - tmp->start, "died");
 			pthread_mutex_unlock(&(tmp->check));
+			display(tmp, "died");
 			return (0);
 		}
 		pthread_mutex_unlock(&(tmp->check));
@@ -95,6 +97,7 @@ int	watcher(t_life *lf)
 void	del(pthread_t phil, pthread_mutex_t cur_fork, pthread_mutex_t check)
 {
 	pthread_join(phil, NULL);
+	
 	pthread_mutex_destroy(&cur_fork);
 	pthread_mutex_destroy(&check);
 }

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/10 20:24:06 by root             ###   ########.fr       */
+/*   Updated: 2022/08/11 18:43:36 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct s_life
 	int				n_eat;		// number of time the philo eats
 	int				died;		// bool to check if a philo died
 
+	pthread_mutex_t	ender;		// wait all threads to end
+	pthread_mutex_t	starter;	// wait that all threads are created to launch the simulation
 	pthread_mutex_t	mem;		// memory used by threads
 	pthread_mutex_t	dis;		// one thread can display at a time
 	t_philo	*philos;			// list of philosophes
@@ -57,7 +59,7 @@ int		check_neg_arg(t_life *lf);
 int		get_time(void);
 int		init_threads(t_life *lf);
 void	*routine(void *phil);
-int		display(t_philo *tmp, int timer, char *status);
+int		display(t_philo *tmp, char *status);
 void	init_forks(t_life *lf);
 int		watcher(t_life *lf);
 
