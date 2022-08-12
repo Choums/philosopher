@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/11 19:00:52 by root             ###   ########.fr       */
+/*   Updated: 2022/08/12 19:03:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	*routine(void *phil)
 		pthread_mutex_lock(&(tmp->check));
 		tmp->ate = get_time();
 		tmp->eating = 0;
+		tmp->count++;
 		pthread_mutex_unlock(&(tmp->check));
 		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
@@ -87,7 +88,16 @@ void	*routine(void *phil)
 		usleep(tmp->lf->t_sleep * 1000);
 		if (!display(tmp, "is thinking"))
 			return (NULL);
-		tmp->count++;
+	}
+	while (1)
+	{
+		pthread_mutex_lock(&(tmp->check));
+		if (!tmp->lf->stop)
+		{
+			pthread_mutex_unlock(&(tmp->check));
+			break;
+		}
+		pthread_mutex_unlock(&(tmp->check));
 	}
 	return (NULL);
 }

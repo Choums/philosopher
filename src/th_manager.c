@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/11 18:36:30 by root             ###   ########.fr       */
+/*   Updated: 2022/08/12 19:13:39 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,20 @@ void	init_forks(t_life *lf)
 		tmp->next_fork = NULL;
 }
 
+/*
+ *	Vérifie que tout les philos ont suffisament manger avant de couper les threads philos
+ *		et le thread watcher
+*/
+// int	counter(t_life *lf, t_philo *tmp)
+// {
+// 	int	full;
+
+// 	full = 0;
+// 	if (tmp->count == tmp->lf->n_eat)
+// 		full++;
+// 	return (1);
+// }
+
 int	watcher(t_life *lf)
 {
 	t_philo	*tmp;
@@ -66,8 +80,6 @@ int	watcher(t_life *lf)
 	while (1)
 	{
 		pthread_mutex_lock(&(tmp->check));
-		// if (tmp->count == tmp->lf->n_eat)
-		// 	return (pthread_mutex_unlock(&(tmp->check)));
 		if (!tmp->ate && !tmp->eating && get_time() - tmp->start >= lf->t_die)
 		{
 			lf->died = 1;
@@ -82,11 +94,37 @@ int	watcher(t_life *lf)
 			display(tmp, "died");
 			return (0);
 		}
-		pthread_mutex_unlock(&(tmp->check));
-		if (!tmp->next)
-			tmp = lf->philos;
+		if (tmp->count == tmp->lf->n_eat)
+		{
+			lf->stop--;
+			if (lf->stop == 0)
+				return (pthread_mutex_unlock(&(tmp->check)));
+			if (!tmp->next)
+			{
+				lf->stop = lf->num;
+				pthread_mutex_unlock(&(tmp->check));
+				tmp = lf->philos;
+			}
+			else
+			{
+				pthread_mutex_unlock(&(tmp->check));
+				tmp = tmp->next;
+			}
+		}
 		else
-			tmp = tmp->next;
+		{
+			if (!tmp->next)
+			{
+				lf->stop = lf->num;
+				pthread_mutex_unlock(&(tmp->check));
+				tmp = lf->philos;
+			}
+			else
+			{
+				pthread_mutex_unlock(&(tmp->check));
+				tmp = tmp->next;
+			}
+		}
 	}
 	return (1);
 }
@@ -97,7 +135,6 @@ int	watcher(t_life *lf)
 void	del(pthread_t phil, pthread_mutex_t cur_fork, pthread_mutex_t check)
 {
 	pthread_join(phil, NULL);
-	
 	pthread_mutex_destroy(&cur_fork);
 	pthread_mutex_destroy(&check);
 }
