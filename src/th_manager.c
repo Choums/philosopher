@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/12 19:13:39 by root             ###   ########.fr       */
+/*   Updated: 2022/08/13 10:19:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,15 @@ int	init_threads(t_life *lf)
 	pthread_mutex_lock(&(lf->starter));
 	while (tmp)
 	{
-		pthread_create(&(tmp->philo), NULL, &routine, tmp);
+		if ((tmp->pos % 2))
+			pthread_create(&(tmp->philo), NULL, &routine, tmp);
+		tmp = tmp->next;
+	}
+	tmp = lf->philos;
+	while (tmp)
+	{
+		if (!(tmp->pos % 2))
+			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
 	pthread_mutex_unlock(&(lf->starter));
@@ -134,7 +142,6 @@ int	watcher(t_life *lf)
 */
 void	del(pthread_t phil, pthread_mutex_t cur_fork, pthread_mutex_t check)
 {
-	pthread_join(phil, NULL);
 	pthread_mutex_destroy(&cur_fork);
 	pthread_mutex_destroy(&check);
 }

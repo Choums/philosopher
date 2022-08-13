@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/12 18:36:01 by root             ###   ########.fr       */
+/*   Updated: 2022/08/13 10:54:20 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,24 @@ t_philo	*ft_lstnew(int pos, t_life *lf)
 void	ft_lstclear(t_philo **lst, t_life *lf, void (*del)(pthread_t, pthread_mutex_t, pthread_mutex_t))
 {
 	t_philo	*tmp;
+	t_philo	*fst;
 
 	if (*lst && del)
 	{
-		while ((*lst)->next)
+		fst = *lst;
+		if (lf->num > 1)
 		{
-			tmp = *lst;
 			*lst = (*lst)->next;
-			ft_lstdelone(tmp, del);
+			while (((*lst)->pos < (*lst)->lf->num))
+			{
+				tmp = *lst;
+				*lst = (*lst)->next;
+				ft_lstdelone(tmp, del);
+			}
+			ft_lstdelone(*lst, del);
+			*lst = NULL;
 		}
-		ft_lstdelone(*lst, del);
-		*lst = NULL;
+		ft_lstdelone(fst, del);
 		pthread_mutex_destroy(&(lf->mem));
 		pthread_mutex_destroy(&(lf->dis));
 		pthread_mutex_destroy(&(lf->starter));

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/12 19:03:39 by root             ###   ########.fr       */
+/*   Updated: 2022/08/13 10:50:50 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	*routine(void *phil)
 		}
 		if (!display(tmp, "has taken a fork"))
 		{
-			// pthread_mutex_unlock(&tmp->cur_fork);
-			// pthread_mutex_unlock(&(*tmp->next_fork));
+			pthread_mutex_unlock(&tmp->cur_fork);
+			pthread_mutex_unlock(&(*tmp->next_fork));
 			return (NULL);
 		}
 		pthread_mutex_lock(&tmp->lf->mem);
@@ -69,16 +69,15 @@ void	*routine(void *phil)
 		pthread_mutex_unlock(&(tmp->check));
 		if (!display(tmp, "is eating"))
 		{
-			// pthread_mutex_unlock(&tmp->lf->mem);
-			// pthread_mutex_unlock(&tmp->cur_fork);
-			// pthread_mutex_unlock(&(*tmp->next_fork));
+			pthread_mutex_unlock(&tmp->lf->mem);
+			pthread_mutex_unlock(&tmp->cur_fork);
+			pthread_mutex_unlock(&(*tmp->next_fork));
 			return (NULL);
 		}
 		usleep(tmp->lf->t_eat * 1000);
 		pthread_mutex_lock(&(tmp->check));
 		tmp->ate = get_time();
 		tmp->eating = 0;
-		tmp->count++;
 		pthread_mutex_unlock(&(tmp->check));
 		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
@@ -88,15 +87,8 @@ void	*routine(void *phil)
 		usleep(tmp->lf->t_sleep * 1000);
 		if (!display(tmp, "is thinking"))
 			return (NULL);
-	}
-	while (1)
-	{
 		pthread_mutex_lock(&(tmp->check));
-		if (!tmp->lf->stop)
-		{
-			pthread_mutex_unlock(&(tmp->check));
-			break;
-		}
+		tmp->count++;
 		pthread_mutex_unlock(&(tmp->check));
 	}
 	return (NULL);
@@ -109,6 +101,7 @@ int	display(t_philo *tmp, char *status)
 	if (ft_strlen(status) != 4 && tmp->lf->died)
 	{
 		pthread_mutex_unlock(&(tmp->check));
+		pthread_mutex_unlock(&(tmp->lf->dis));
 		return (0);
 	}
 	printf("%d %d %s\n", get_time() - tmp->start, tmp->pos, status);
@@ -127,11 +120,21 @@ int	display(t_philo *tmp, char *status)
 */
 int	main(int ac, char **av)
 {
-	t_life			lf;
+	t_life	lf;
+	int		i;
+	t_philo	*tmp;
 
 	if (!check_arg(ac, av, &lf))
 		return (ft_err("Invalid Arguments"));
 	init_threads(&lf);
+	tmp = lf.philos;
+	i = 0;
+	while (++i < lf.num)
+	{
+		pthread_join(tmp->philo, NULL);
+		tmp = tmp->next;
+	}
+	pthread_join(tmp->philo, NULL);
 	ft_lstclear(&(lf.philos), &lf, del);
 	return (0);
 }
