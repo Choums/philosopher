@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/08/12 18:25:00 by root             ###   ########.fr       */
+/*   Updated: 2022/08/13 11:18:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_arg(int ac, char **av, t_life *lf)
 	if (!check_neg_arg(lf))
 		return (0);
 	pthread_mutex_init(&(lf->starter), NULL);
-	pthread_mutex_init(&(lf->mem), NULL);
+	// pthread_mutex_init(&(lf->mem), NULL);
 	pthread_mutex_init(&(lf->dis), NULL);
 	return (1);
 }

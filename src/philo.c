@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/13 10:50:50 by root             ###   ########.fr       */
+/*   Updated: 2022/08/13 11:47:01 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,21 @@ void	*routine(void *phil)
 			pthread_mutex_unlock(&(*tmp->next_fork));
 			return (NULL);
 		}
-		pthread_mutex_lock(&tmp->lf->mem);
 		pthread_mutex_lock(&(tmp->check));
 		tmp->eating = 1;
+		tmp->ate = get_time();
 		pthread_mutex_unlock(&(tmp->check));
 		if (!display(tmp, "is eating"))
 		{
-			pthread_mutex_unlock(&tmp->lf->mem);
 			pthread_mutex_unlock(&tmp->cur_fork);
 			pthread_mutex_unlock(&(*tmp->next_fork));
 			return (NULL);
 		}
 		usleep(tmp->lf->t_eat * 1000);
 		pthread_mutex_lock(&(tmp->check));
-		tmp->ate = get_time();
 		tmp->eating = 0;
+		tmp->count++;
 		pthread_mutex_unlock(&(tmp->check));
-		pthread_mutex_unlock(&tmp->lf->mem);
 		pthread_mutex_unlock(&tmp->cur_fork);
 		pthread_mutex_unlock(&(*tmp->next_fork));
 		if (!display(tmp, "is sleeping"))
@@ -87,9 +85,6 @@ void	*routine(void *phil)
 		usleep(tmp->lf->t_sleep * 1000);
 		if (!display(tmp, "is thinking"))
 			return (NULL);
-		pthread_mutex_lock(&(tmp->check));
-		tmp->count++;
-		pthread_mutex_unlock(&(tmp->check));
 	}
 	return (NULL);
 }

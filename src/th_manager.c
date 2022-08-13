@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/13 10:19:59 by root             ###   ########.fr       */
+/*   Updated: 2022/08/13 11:48:31 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	init_threads(t_life *lf)
 	pthread_mutex_lock(&(lf->starter));
 	while (tmp)
 	{
-		if ((tmp->pos % 2))
+		if (!(tmp->pos % 2))
 			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
 	tmp = lf->philos;
 	while (tmp)
 	{
-		if (!(tmp->pos % 2))
+		if ((tmp->pos % 2))
 			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
@@ -65,20 +65,6 @@ void	init_forks(t_life *lf)
 	else
 		tmp->next_fork = NULL;
 }
-
-/*
- *	Vérifie que tout les philos ont suffisament manger avant de couper les threads philos
- *		et le thread watcher
-*/
-// int	counter(t_life *lf, t_philo *tmp)
-// {
-// 	int	full;
-
-// 	full = 0;
-// 	if (tmp->count == tmp->lf->n_eat)
-// 		full++;
-// 	return (1);
-// }
 
 int	watcher(t_life *lf)
 {
@@ -140,7 +126,7 @@ int	watcher(t_life *lf)
 /*
  *	free la fourchette et le philo
 */
-void	del(pthread_t phil, pthread_mutex_t cur_fork, pthread_mutex_t check)
+void	del(pthread_mutex_t cur_fork, pthread_mutex_t check)
 {
 	pthread_mutex_destroy(&cur_fork);
 	pthread_mutex_destroy(&check);

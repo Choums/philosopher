@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/12 18:36:08 by root             ###   ########.fr       */
+/*   Updated: 2022/08/13 11:18:26 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,30 @@ typedef struct s_life
 	int				stop;		// make the watcher stop when all threads have eaten enough
 
 	pthread_mutex_t	starter;	// wait that all threads are created to launch the simulation
-	pthread_mutex_t	mem;		// memory used by threads
+	// pthread_mutex_t	mem;		// memory used by threads
 	pthread_mutex_t	dis;		// one thread can display at a time
 	t_philo	*philos;			// list of philosophes
 }	t_life;
 
+/*	Checker */
 int		check_arg(int ac, char **av, t_life *lf);
 int		check_neg_arg(t_life *lf);
 int		get_time(void);
+
+/*	Thread */
 int		init_threads(t_life *lf);
 void	*routine(void *phil);
 int		display(t_philo *tmp, char *status);
 void	init_forks(t_life *lf);
 int		watcher(t_life *lf);
-// int		counter(t_life *lf, t_philo *tmp);
 
 /*	list */
 t_philo	*ft_lstnew(int pos, t_life *lf);
-void	ft_lstclear(t_philo **lst, t_life *lf, void (*del)(pthread_t, pthread_mutex_t, pthread_mutex_t));
+void	ft_lstclear(t_philo **lst, t_life *lf, void (*del)(pthread_mutex_t, pthread_mutex_t));
 void	ft_lstadd_back(t_philo **alst, t_philo *new);
-void	ft_lstdelone(t_philo *lst, void (*del)(pthread_t, pthread_mutex_t, pthread_mutex_t));
+void	ft_lstdelone(t_philo *lst, void (*del)(pthread_mutex_t, pthread_mutex_t));
 t_philo	*ft_lstlast(t_philo *lst);
-void	del(pthread_t phil, pthread_mutex_t cur_fork, pthread_mutex_t check);
+void	del(pthread_mutex_t cur_fork, pthread_mutex_t check);
 
 /*	Utils */
 int		ft_atoi(const char *str);
