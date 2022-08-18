@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/14 16:43:03 by root             ###   ########.fr       */
+/*   Updated: 2022/08/18 13:18:28 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	*routine(void *phil)
 		usleep(tmp->lf->t_sleep * 1000);
 		if (!display(tmp, "is thinking"))
 			return (NULL);
-		usleep(200);
+		usleep(1000);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/14 16:39:04 by root             ###   ########.fr       */
+/*   Updated: 2022/08/16 20:14:50 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	init_threads(t_life *lf)
 	pthread_mutex_lock(&(lf->starter));
 	while (tmp)
 	{
-		if ((tmp->pos % 2))
+		if (!(tmp->pos % 2))
 			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
 	tmp = lf->philos;
 	while (tmp)
 	{
-		if (!(tmp->pos % 2))
+		if ((tmp->pos % 2))
 			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
