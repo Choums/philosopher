@@ -1,4 +1,4 @@
 .vscode
-obj
-philo
-sad.sh
+philo/obj
+philo/philo
+philo/sad.sh

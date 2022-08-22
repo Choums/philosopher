@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/13 11:18:43 by root             ###   ########.fr       */
+/*   Updated: 2022/08/22 16:44:29 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_philo	*ft_lstnew(int pos, t_life *lf)
 	another = malloc(sizeof(*another));
 	if (!another)
 		return (NULL);
-    another->count = 0;
+	another->count = 0;
 	another->pos = pos;
 	another->ate = 0;
 	another->eating = 0;
@@ -32,7 +32,8 @@ t_philo	*ft_lstnew(int pos, t_life *lf)
 	return (another);
 }
 
-void	ft_lstclear(t_philo **lst, t_life *lf, void (*del)(pthread_mutex_t, pthread_mutex_t))
+void	ft_lstclear(t_philo **lst, t_life *lf,
+				void (*del)(pthread_mutex_t, pthread_mutex_t))
 {
 	t_philo	*tmp;
 	t_philo	*fst;
@@ -53,7 +54,6 @@ void	ft_lstclear(t_philo **lst, t_life *lf, void (*del)(pthread_mutex_t, pthread
 			*lst = NULL;
 		}
 		ft_lstdelone(fst, del);
-		// pthread_mutex_destroy(&(lf->mem));
 		pthread_mutex_destroy(&(lf->dis));
 		pthread_mutex_destroy(&(lf->starter));
 	}
@@ -85,7 +85,8 @@ t_philo	*ft_lstlast(t_philo *lst)
 	return (lst);
 }
 
-void	ft_lstdelone(t_philo *lst, void (*del)(pthread_mutex_t, pthread_mutex_t))
+void	ft_lstdelone(t_philo *lst,
+			void (*del)(pthread_mutex_t, pthread_mutex_t))
 {
 	if (lst && del)
 	{

@@ -5,18 +5,20 @@ INCDIR		=	./includes
 OBJDIR		=	obj
 
 SRCS		=	philo.c\
-				checker.c\
 				funct.c\
-				lst_manager.c\
+				action.c\
+				watcher.c\
+				checker.c\
 				th_manager.c\
+				lst_manager.c\
 
 OBJ			=	${addprefix ${OBJDIR}/,${SRCS:.c=.o}}
 
 CC			=	clang
 
-CFLAGS		=	-g3 -Wall -Wextra -fsanitize=thread
+CFLAGS		=	-g3 -Wall -Wextra #-fsanitize=thread
 
-all:			obj ${FT_LIB} ${NAME}
+all:			obj ${NAME}
 
 ${NAME}:		${OBJ}
 				${CC} ${CFLAGS} ${OBJ} -o ${NAME} -lpthread

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/18 13:18:28 by root             ###   ########.fr       */
+/*   Updated: 2022/08/22 16:54:33 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,48 +38,10 @@ void	*routine(void *phil)
 	pthread_mutex_unlock(&(tmp->check));
 	while (tmp->count != tmp->lf->n_eat)
 	{
-		if (tmp->pos % 2)
-		{
-			if (&(*tmp->next_fork))
-				pthread_mutex_lock(&(*tmp->next_fork));
-			else
-				return (NULL);
-			pthread_mutex_lock(&tmp->cur_fork);
-		}
-		else
-		{
-			pthread_mutex_lock(&tmp->cur_fork);
-			if (&(*tmp->next_fork))
-				pthread_mutex_lock(&(*tmp->next_fork));
-			else
-			{
-				pthread_mutex_unlock(&tmp->cur_fork);
-				return (NULL);	
-			}
-		}
-		if (!display(tmp, "has taken a fork"))
-		{
-			pthread_mutex_unlock(&tmp->cur_fork);
-			pthread_mutex_unlock(&(*tmp->next_fork));
+		if (!take_forkp(tmp))
 			return (NULL);
-		}
-		pthread_mutex_lock(&(tmp->check));
-		tmp->eating = 1;
-		tmp->ate = get_time();
-		pthread_mutex_unlock(&(tmp->check));
-		if (!display(tmp, "is eating"))
-		{
-			pthread_mutex_unlock(&tmp->cur_fork);
-			pthread_mutex_unlock(&(*tmp->next_fork));
+		if (!eating(tmp))
 			return (NULL);
-		}
-		usleep(tmp->lf->t_eat * 1000);
-		pthread_mutex_lock(&(tmp->check));
-		tmp->eating = 0;
-		tmp->count++;
-		pthread_mutex_unlock(&(tmp->check));
-		pthread_mutex_unlock(&tmp->cur_fork);
-		pthread_mutex_unlock(&(*tmp->next_fork));
 		if (!display(tmp, "is sleeping"))
 			return (NULL);
 		usleep(tmp->lf->t_sleep * 1000);

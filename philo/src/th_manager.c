@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   th_manager.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/16 20:14:50 by root             ###   ########.fr       */
+/*   Updated: 2022/08/22 16:54:00 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+void	create_list(t_life *lf)
+{
+	int	i;
+
+	i = 1;
+	if (lf->num > 0)
+		lf->philos = ft_lstnew(i++, lf);
+	while (i <= lf->num)
+		ft_lstadd_back(&(lf->philos), ft_lstnew(i++, lf));
+}
 
 /*
  *	Init. les threads(philosophes) et debute la simu
@@ -20,14 +31,9 @@
 */
 int	init_threads(t_life *lf)
 {
-	int		i;
 	t_philo	*tmp;
 
-	i = 1;
-	if (lf->num > 0)
-		lf->philos = ft_lstnew(i++, lf);
-	while (i <= lf->num)
-		ft_lstadd_back(&(lf->philos), ft_lstnew(i++, lf));
+	create_list(lf);
 	init_forks(lf);
 	tmp = lf->philos;
 	pthread_mutex_lock(&(lf->starter));
@@ -71,7 +77,6 @@ int	watcher(t_life *lf)
 	t_philo	*tmp;
 
 	tmp = lf->philos;
-	usleep(50 * 1000);
 	while (1)
 	{
 		pthread_mutex_lock(&(tmp->check));
@@ -89,37 +94,8 @@ int	watcher(t_life *lf)
 			display(tmp, "died");
 			return (0);
 		}
-		if (tmp->count == tmp->lf->n_eat)
-		{
-			lf->stop--;
-			if (lf->stop == 0)
-				return (pthread_mutex_unlock(&(tmp->check)));
-			if (!tmp->next)
-			{
-				lf->stop = lf->num;
-				pthread_mutex_unlock(&(tmp->check));
-				tmp = lf->philos;
-			}
-			else
-			{
-				pthread_mutex_unlock(&(tmp->check));
-				tmp = tmp->next;
-			}
-		}
-		else
-		{
-			if (!tmp->next)
-			{
-				lf->stop = lf->num;
-				pthread_mutex_unlock(&(tmp->check));
-				tmp = lf->philos;
-			}
-			else
-			{
-				pthread_mutex_unlock(&(tmp->check));
-				tmp = tmp->next;
-			}
-		}
+		if (!check_stop(lf, tmp))
+			return (0);
 	}
 	return (1);
 }
