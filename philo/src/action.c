@@ -6,13 +6,13 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:04:31 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 16:30:33 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:46:31 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	take_forkp(t_philo *tmp)
+int	take_fork(t_philo *tmp)
 {
 	if (tmp->pos % 2)
 	{

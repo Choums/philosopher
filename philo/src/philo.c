@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 16:54:33 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:56:13 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	*routine(void *phil)
 	pthread_mutex_lock(&(tmp->check));
 	tmp->start = get_time();
 	pthread_mutex_unlock(&(tmp->check));
-	while (tmp->count != tmp->lf->n_eat)
+	while (check_end(tmp))
 	{
-		if (!take_forkp(tmp))
+		if (!take_fork(tmp))
 			return (NULL);
 		if (!eating(tmp))
 			return (NULL);
@@ -50,6 +50,18 @@ void	*routine(void *phil)
 		usleep(1000);
 	}
 	return (NULL);
+}
+
+int	check_end(t_philo *tmp)
+{
+	pthread_mutex_lock(&(tmp->check));
+	if (tmp->count == tmp->lf->n_eat)
+	{
+		pthread_mutex_unlock(&(tmp->check));
+		return (0);
+	}
+	pthread_mutex_unlock(&(tmp->check));
+	return (1);
 }
 
 int	display(t_philo *tmp, char *status)

@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 16:54:00 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:59:32 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	init_threads(t_life *lf)
 	tmp = lf->philos;
 	while (tmp)
 	{
-		if ((tmp->pos % 2))
+		// if (tmp->pos % 2)
 			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}

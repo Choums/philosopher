@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 17:11:59 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:55:04 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int		get_time(void);
 int		init_threads(t_life *lf);
 void	create_list(t_life *lf);
 void	*routine(void *phil);
-int		take_forkp(t_philo *tmp);
+int		check_end(t_philo *tmp);
+int		take_fork(t_philo *tmp);
 int		take_forkup(t_philo *tmp);
 int		eating(t_philo *tmp);
 int		display(t_philo *tmp, char *status);
