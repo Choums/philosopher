@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 17:55:04 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:11:21 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_life
 	int				died;
 	int				stop;
 
+	pthread_mutex_t	death;
 	pthread_mutex_t	starter;
 	pthread_mutex_t	dis;
 	t_philo			*philos;

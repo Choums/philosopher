@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 16:02:00 by root              #+#    #+#             */
-/*   Updated: 2022/08/22 17:11:46 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:07:13 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	check_arg(int ac, char **av, t_life *lf)
 	if (lf->num <= 0)
 		return (0);
 	pthread_mutex_init(&(lf->starter), NULL);
+	pthread_mutex_init(&(lf->death), NULL);
 	pthread_mutex_init(&(lf->dis), NULL);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 17:56:13 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:36:52 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	*routine(void *phil)
 	pthread_mutex_unlock(&(tmp->lf->starter));
 	pthread_mutex_lock(&(tmp->check));
 	tmp->start = get_time();
+	tmp->ate = tmp->start;
 	pthread_mutex_unlock(&(tmp->check));
 	while (check_end(tmp))
 	{
@@ -68,11 +69,17 @@ int	display(t_philo *tmp, char *status)
 {
 	pthread_mutex_lock(&(tmp->check));
 	pthread_mutex_lock(&(tmp->lf->dis));
-	if (ft_strlen(status) != 4 && tmp->lf->died)
+	if (ft_strlen(status) != 4)
 	{
-		pthread_mutex_unlock(&(tmp->check));
-		pthread_mutex_unlock(&(tmp->lf->dis));
-		return (0);
+		pthread_mutex_lock(&(tmp->lf->death));
+		if (tmp->lf->died)
+		{
+			pthread_mutex_unlock(&(tmp->lf->death));
+			pthread_mutex_unlock(&(tmp->check));
+			pthread_mutex_unlock(&(tmp->lf->dis));
+			return (0);
+		}
+		pthread_mutex_unlock(&(tmp->lf->death));
 	}
 	printf("%d %d %s\n", get_time() - tmp->start, tmp->pos, status);
 	pthread_mutex_unlock(&(tmp->lf->dis));

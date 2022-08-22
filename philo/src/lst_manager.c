@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 14:49:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 16:44:29 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:07:50 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_lstclear(t_philo **lst, t_life *lf,
 		ft_lstdelone(fst, del);
 		pthread_mutex_destroy(&(lf->dis));
 		pthread_mutex_destroy(&(lf->starter));
+		pthread_mutex_destroy(&(lf->death));
 	}
 }
 
