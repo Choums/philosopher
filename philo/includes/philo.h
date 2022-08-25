@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:33:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/25 09:27:14 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/25 10:26:53 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	init_forks(t_life *lf);
 int		watcher(t_life *lf);
 t_philo	*check_stop(t_life *lf, t_philo *tmp);
 t_philo	*next_tmp(t_life *lf, t_philo *tmp);
+void	sleeper(t_philo *tmp, int time);
 
 /*	list */
 t_philo	*ft_lstnew(int pos, t_life *lf);

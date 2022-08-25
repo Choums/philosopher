@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:04:31 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 17:46:31 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/25 12:23:22 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	eating(t_philo *tmp)
 		pthread_mutex_unlock(&tmp->cur_fork);
 		return (pthread_mutex_unlock(&(*tmp->next_fork)));
 	}
-	usleep(tmp->lf->t_eat * 1000);
+	sleeper(tmp, tmp->lf->t_eat);
 	pthread_mutex_lock(&(tmp->check));
 	tmp->eating = 0;
 	tmp->count++;
@@ -85,3 +85,31 @@ int	eating(t_philo *tmp)
 	pthread_mutex_unlock(&(*tmp->next_fork));
 	return (1);
 }
+
+/*
+ *	Fait dormir ou manger le philo pendant le temps donné
+ *	Le prog doit pouvoir couper pendant l'action d'un philo
+*/
+void	sleeper(t_philo *tmp, int time)
+{
+	int	start;
+
+	if (time < 2000)
+	{
+		usleep(time * 1000);
+		return ;
+	}
+	start = get_time();
+	pthread_mutex_lock(&(tmp->lf->death));
+	while (tmp->lf->died == 0)
+	{
+		pthread_mutex_unlock(&(tmp->lf->death));
+		if (get_time() - start >= time)
+			return ;
+		usleep(500);
+		pthread_mutex_lock(&(tmp->lf->death));
+	}
+	if (tmp->lf->died == 1)
+		pthread_mutex_unlock(&(tmp->lf->death));
+}
+
