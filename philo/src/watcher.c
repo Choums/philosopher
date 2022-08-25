@@ -6,13 +6,13 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:05:57 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/22 17:58:10 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/25 09:27:04 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	check_stop(t_life *lf, t_philo *tmp)
+t_philo	*check_stop(t_life *lf, t_philo *tmp)
 {
 	if (tmp->count == tmp->lf->n_eat)
 	{
@@ -20,36 +20,35 @@ int	check_stop(t_life *lf, t_philo *tmp)
 		if (lf->stop == 0)
 		{
 			pthread_mutex_unlock(&(tmp->check));
-			return (0);
+			return (NULL);
 		}
 		if (!tmp->next)
 		{
 			lf->stop = lf->num;
 			pthread_mutex_unlock(&(tmp->check));
-			tmp = lf->philos;
+			return (lf->philos);
 		}
 		else
 		{
 			pthread_mutex_unlock(&(tmp->check));
-			tmp = tmp->next;
+			return (tmp->next);
 		}
 	}
 	else
-		next_tmp(lf, tmp);
-	return (1);
+		return (next_tmp(lf, tmp));
 }
 
-void	next_tmp(t_life *lf, t_philo *tmp)
+t_philo	*next_tmp(t_life *lf, t_philo *tmp)
 {
 	if (!tmp->next)
 	{
 		lf->stop = lf->num;
 		pthread_mutex_unlock(&(tmp->check));
-		tmp = lf->philos;
+		return (lf->philos);
 	}
 	else
 	{
 		pthread_mutex_unlock(&(tmp->check));
-		tmp = tmp->next;
+		return (tmp->next);
 	}
 }
