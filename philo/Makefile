@@ -16,7 +16,7 @@ OBJ			=	${addprefix ${OBJDIR}/,${SRCS:.c=.o}}
 
 CC			=	clang
 
-CFLAGS		=	-g3 -Wall -Wextra -fsanitize=thread
+CFLAGS		=	-g3 -Wall -Wextra -Werror -fsanitize=thread
 
 all:			obj ${NAME}
 
