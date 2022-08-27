@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:04:31 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/27 17:23:38 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/27 20:12:56 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,6 @@ void	sleeper(t_philo *tmp, int time)
 {
 	int	start;
 
-	if (time < 1000)
-	{
-		usleep(time * 1000);
-		return ;
-	}
 	start = get_time();
 	pthread_mutex_lock(&(tmp->lf->dis));
 	while (tmp->lf->died == 0)
