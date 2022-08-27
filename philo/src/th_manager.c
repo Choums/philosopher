@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/25 09:29:45 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/27 15:57:37 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,14 @@ int	watcher(t_life *lf)
 		pthread_mutex_lock(&(tmp->check));
 		if (!tmp->eating && get_time() - tmp->ate >= lf->t_die)
 		{
-			pthread_mutex_lock(&(tmp->lf->death));
+			pthread_mutex_lock(&(tmp->lf->dis));
 			lf->died = 1;
-			pthread_mutex_unlock(&(tmp->lf->death));
+			pthread_mutex_unlock(&(tmp->lf->dis));
 			pthread_mutex_unlock(&(tmp->check));
 			display(tmp, "died");
 			return (0);
 		}
+		pthread_mutex_unlock(&(tmp->check));
 		tmp = check_stop(lf, tmp);
 		if (tmp == NULL)
 			return (0);

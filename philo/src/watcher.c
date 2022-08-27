@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:05:57 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/25 11:20:01 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/27 15:57:34 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_philo	*check_stop(t_life *lf, t_philo *tmp)
 {
+	pthread_mutex_lock(&(tmp->check));
 	if (tmp->count == tmp->lf->n_eat)
 	{
 		lf->stop--;

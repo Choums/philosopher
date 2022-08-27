@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/25 12:22:06 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/27 17:25:20 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	*routine(void *phil)
 		sleeper(tmp, tmp->lf->t_sleep);
 		if (!display(tmp, "is thinking"))
 			return (NULL);
-		usleep(300);
 	}
 	return (NULL);
 }
@@ -71,15 +70,12 @@ int	display(t_philo *tmp, char *status)
 	pthread_mutex_lock(&(tmp->lf->dis));
 	if (ft_strlen(status) != 4)
 	{
-		pthread_mutex_lock(&(tmp->lf->death));
 		if (tmp->lf->died)
 		{
-			pthread_mutex_unlock(&(tmp->lf->death));
 			pthread_mutex_unlock(&(tmp->lf->dis));
 			pthread_mutex_unlock(&(tmp->check));
 			return (0);
 		}
-		pthread_mutex_unlock(&(tmp->lf->death));
 	}
 	printf("%d %d %s\n", get_time() - tmp->start, tmp->pos, status);
 	pthread_mutex_unlock(&(tmp->lf->dis));
