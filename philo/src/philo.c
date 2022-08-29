@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:35:39 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/27 20:12:43 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/08/29 10:47:33 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	*routine(void *phil)
 		sleeper(tmp, tmp->lf->t_sleep);
 		if (!display(tmp, "is thinking"))
 			return (NULL);
-		usleep(100);
+		usleep(200);
 	}
 	return (NULL);
 }
