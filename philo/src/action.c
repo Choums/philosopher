@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:04:31 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/27 20:12:56 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/09/13 13:52:26 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int	eating(t_philo *tmp)
 	if (!display(tmp, "is eating"))
 	{
 		pthread_mutex_unlock(&tmp->cur_fork);
-		return (pthread_mutex_unlock(&(*tmp->next_fork)));
+		pthread_mutex_unlock(&(*tmp->next_fork));
+		return (0);
 	}
 	sleeper(tmp, tmp->lf->t_eat);
 	pthread_mutex_lock(&(tmp->check));

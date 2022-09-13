@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:55:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/08/29 11:04:30 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/09/13 14:09:20 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ int	init_threads(t_life *lf)
 	pthread_mutex_lock(&(lf->starter));
 	while (tmp)
 	{
-		if ((tmp->pos % 2))
+		if (!(tmp->pos % 2))
 			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
 	tmp = lf->philos;
 	while (tmp)
 	{
-		if (!(tmp->pos % 2))
+		if ((tmp->pos % 2))
 			pthread_create(&(tmp->philo), NULL, &routine, tmp);
 		tmp = tmp->next;
 	}
@@ -79,8 +79,9 @@ int	watcher(t_life *lf)
 	tmp = lf->philos;
 	while (1)
 	{
+		usleep(200);
 		pthread_mutex_lock(&(tmp->check));
-		if (!tmp->eating && get_time() - tmp->ate >= lf->t_die)
+		if (tmp->ate && !tmp->eating && get_time() - tmp->ate >= lf->t_die)
 		{
 			pthread_mutex_lock(&(tmp->lf->dis));
 			lf->died = 1;
